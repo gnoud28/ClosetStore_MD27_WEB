@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { Route, NavLink } from "react-router-dom";
+import { history } from "../../App";
 
 export const AdminTemplate = (props) => {
   const { Component, ...restProps } = props;
@@ -8,6 +9,7 @@ export const AdminTemplate = (props) => {
     <Route
       {...restProps}
       render={(propsRoute) => {
+        if (localStorage.getItem("admin")) {
         return (
           <div>
             {/* Banner */}
@@ -123,6 +125,11 @@ export const AdminTemplate = (props) => {
                         </NavLink>
                       </li>
                       <li className="nav-item">
+                        <NavLink to="/category" className="nav-link">
+                          <i className="bi bi-bookmarks" /> Loại sản phẩm
+                        </NavLink>
+                      </li>
+                      <li className="nav-item">
                         <NavLink to="/user" className="nav-link">
                           <i className="bi bi-people" /> Người dùng
                         </NavLink>
@@ -136,15 +143,15 @@ export const AdminTemplate = (props) => {
                     <div className="mt-10" />
                     {/* User (md) */}
                     <ul className="navbar-nav">
-                      <li className="nav-item">
-                        <a className="nav-link" href="#">
-                          <i className="bi bi-person-square" /> Account
-                        </a>
-                      </li>
-                      <li className="nav-item">
-                        <a className="nav-link" href="#">
-                          <i className="bi bi-box-arrow-left" /> Logout
-                        </a>
+                      <li
+                        className="nav-item"
+                        onClick={() => {
+                          localStorage.removeItem("admin");
+                        }}
+                      >
+                        <NavLink to="/" className="nav-link">
+                          <i className="bi bi-box-arrow-left" /> Đăng xuất
+                        </NavLink>
                       </li>
                     </ul>
                   </div>
@@ -162,7 +169,11 @@ export const AdminTemplate = (props) => {
             </div>
           </div>
         );
-      }}
+      }
+      alert("Bạn không đủ quyền truy cập! Vui lòng đăng nhập vai trò admin");
+      history.push("/");
+    }}
+
     />
   );
 };

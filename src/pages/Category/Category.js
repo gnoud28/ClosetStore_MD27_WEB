@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { classNames } from "primereact/utils";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
@@ -11,51 +10,18 @@ import { InputText } from "primereact/inputtext";
 import { useDispatch, useSelector } from "react-redux";
 import { storage_bucket } from "./../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { CreateProductAction, DeleteProductAction, GetListProductAction, UpdateProductAction } from "../../redux/action/ProductAction";
-import moment from "moment";
-import { GetListCategotyAction } from "../../redux/action/CategoryAction";
+import { CreateCategotyAction, GetListCategotyAction, UpdateCategotyAction } from "../../redux/action/CategoryAction";
 
-export default function Product() {
+export default function Category() {
   const dispatch = useDispatch();
-  const { arrProduct } = useSelector((root) => root.ProductReducer);
   const { arrCategory } = useSelector((root) => root.CategoryReducer);
   console.log(arrCategory);
   let emptyProduct = {
-    product_id: "0",
+    category_id: "0",
   };
-  const [sizes, setSizes] = useState([]);
-
-  const handleSizeClick = (size) => {
-    const newSize = { size_name: size };
-    const newSizes = [...sizes];
-
-    const index = newSizes.findIndex((s) => s.size_name === size);
-    if (index === -1) {
-      newSizes.push(newSize);
-    } else {
-      newSizes.splice(index, 1);
-    }
-
-    setSizes(newSizes);
-    const updatedProduct = { ...product };
-
-  // Cập nhật thông tin kích thước cho sản phẩm
-  updatedProduct.sizes = newSizes;
-
-  // Cập nhật thông tin sản phẩm
-  setProduct(updatedProduct);
-  };
-  console.log(sizes)
   const [selectedValue, setSelectedValue] = useState("");
 
-  const handleSelectChange = (event) => {
-    const value = event.target.value;
-    setProduct((prevProduct) => ({
-      ...prevProduct,
-      category_id: value,
-    }));
-    setSelectedValue(event.target.value);
-  };
+ 
   const uploadFile = (e) => {
     let file = e.target.files[0];
     let fileRef = ref(storage_bucket, file.name);
@@ -81,7 +47,7 @@ export default function Product() {
   };
 
   const [inputValue, setInputValue] = useState("");
-  const [text, setText] = useState("Thêm mới sản phẩm");
+  const [text, setText] = useState("Thêm mới loại sản phẩm");
   const [products, setProducts] = useState([]);
   const [productDialog, setProductDialog] = useState(false);
   const [deleteProductDialog, setDeleteProductDialog] = useState(false);
@@ -95,14 +61,12 @@ export default function Product() {
   const dt = useRef(null);
 
   useEffect(() => {
-    const action = GetListProductAction();
-    dispatch(action);
     const action1 = GetListCategotyAction();
     dispatch(action1);
   }, []);
   useEffect(() => {
-    setProducts(arrProduct);
-  }, [arrProduct]);
+    setProducts(arrCategory);
+  }, [arrCategory]);
 
   const openNew = () => {
     setProduct(emptyProduct);
@@ -130,27 +94,27 @@ export default function Product() {
       let _products = [...products];
       let _product = { ...product };
       console.log(_product);
-      if (product.product_id !== "0") {
+      if (product.category_id !== "0") {
         const index = findIndexById(product.id);
 
         _products[index] = _product;
-        const action = await UpdateProductAction(product);
+        const action = await UpdateCategotyAction(product);
         await dispatch(action);
         setProductDialog(false);
         toast.current.show({
           severity: "success",
           summary: "Thành công",
-          detail: `Cập nhật sản phẩm ${product.product_name} thành công`,
+          detail: `Cập nhật loại sản phẩm ${product.product_name} thành công`,
           life: 3000,
         });
-        setText("Chỉnh sửa sản phẩm");
+        setText("Chỉnh sửa loại sản phẩm");
       } else {
-        const action = await CreateProductAction(_product);
+        const action = await CreateCategotyAction(_product);
         await dispatch(action);
         toast.current.show({
           severity: "success",
           summary: "Thành công",
-          detail: "Tạo  mới sản phẩm thành công",
+          detail: "Tạo  mới loại sản phẩm thành công",
           life: 3000,
         });
          setProductDialog(false);
@@ -163,26 +127,22 @@ export default function Product() {
   };
 
   const editProduct = (product) => {
-    setText("Chỉnh sửa sản phẩm");
+    setText("Chỉnh sửa loại sản phẩm");
     setProduct({ ...product });
     setProductDialog(true);
     setTempProduct({ ...product });
   };
 
-  const confirmDeleteProduct = (product) => {
-    setProduct(product);
-    setDeleteProductDialog(true);
-  };
 
   const deleteProduct = async () => {
-    const action = await DeleteProductAction(product.product_id);
-    await dispatch(action);
+    // const action = await DeleteProductAction(product.category_id);
+    // await dispatch(action);
     setDeleteProductDialog(false);
     setProduct(emptyProduct);
     toast.current.show({
       severity: "error",
       summary: "Thành công",
-      detail: `Xóa sản phẩm ${product.product_name} thành công`,
+      detail: `Xóa loại sản phẩm ${product.product_name} thành công`,
       life: 3000,
       options: {
         style: {
@@ -255,7 +215,7 @@ export default function Product() {
           severity="success"
           onClick={() => {
             openNew();
-            setText("Thêm mới sản phẩm");
+            setText("Thêm mới loại sản phẩm");
           }}
         />
         {/* <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} /> */}
@@ -285,15 +245,8 @@ export default function Product() {
       />
     );
   };
-  const formatCurrency = (value) => {
-    return value.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
-  };
-  const priceBodyTemplate = (rowData) => {
-    return formatCurrency(rowData.price);
-  };
+
+
 
   const actionBodyTemplate = (rowData) => {
     return (
@@ -305,20 +258,20 @@ export default function Product() {
           className="mr-2"
           onClick={() => editProduct(rowData)}
         />
-        <Button
+        {/* <Button
           icon="pi pi-trash"
           rounded
           outlined
           severity="danger"
           onClick={() => confirmDeleteProduct(rowData)}
-        />
+        /> */}
       </React.Fragment>
     );
   };
 
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0 mb-4">Quản lý sản phẩm</h4>
+      <h4 className="m-0 mb-4">Quản lý loại sản phẩm</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText
@@ -389,21 +342,21 @@ export default function Product() {
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} sản phẩm"
+            currentPageReportTemplate="Đang hiển thị {first} đến {last} trong tổng số {totalRecords} loại loại sản phẩm"
             globalFilter={globalFilter}
             header={header}
           >
             {/* <Column selectionMode="multiple" exportable={false}></Column> */}
             <Column
-              field="product_id"
+              field="category_id"
               header="Mã"
               sortable
               style={{ minWidth: "11rem" }}
             ></Column>
 
             <Column
-              field="product_name"
-              header="Tên sản phẩm"
+              field="category_name"
+              header="Loại loại sản phẩm"
               sortable
               style={{ minWidth: "12rem" }}
             ></Column>
@@ -414,27 +367,8 @@ export default function Product() {
               sortable
               style={{ minWidth: "12rem" }}
             ></Column>
-            <Column
-              field="price"
-              header="Giá tiền"
-              body={priceBodyTemplate}
-              sortable
-              style={{ minWidth: "8rem" }}
-            ></Column>
-            <Column
-              field={(createAt) =>
-                moment(createAt.creation_date).format("DD-MM-YYYY")
-              }
-              header="Ngày tạo"
-              sortable
-              style={{ minWidth: "12rem" }}
-            ></Column>
-            <Column
-              field={(createAt) => createAt?.category?.category_name}
-              header="Loại"
-              sortable
-              style={{ minWidth: "12rem" }}
-            ></Column>
+          
+           
             <Column
             style={{ minWidth: "12rem" }}
               field="image_url"
@@ -466,80 +400,19 @@ export default function Product() {
               className="font-bold"
               style={{ fontWeight: "bold" }}
             >
-              Tên sản phẩm
+              Tên loại sản phẩm
             </label>
             <br />
             <InputText
-              id="product_name"
-              value={product.product_name}
-              onChange={(e) => onInputChange(e, "product_name")}
+              id="category_name"
+              value={product.category_name}
+              onChange={(e) => onInputChange(e, "category_name")}
               required
               autoFocus
             />
           </div>
-          <div className="field mt-5">
-            <label
-              htmlFor="processTypeName"
-              className="font-bold"
-              style={{ fontWeight: "bold" }}
-            >
-              Giá tiền
-            </label>
-            <br />
-            <InputText
-              type="number"
-              id="price"
-              value={product.price}
-              onChange={(e) => onInputChange(e, "price")}
-              required
-              autoFocus
-            />
-          </div>
-          <div className="field mt-5">
-            <label
-              htmlFor="processTypeName"
-              className="font-bold"
-              style={{ fontWeight: "bold" }}
-            >
-              Ngày tạo
-            </label>
-            <br />
-            <InputText
-              type="date"
-              id="price"
-              value={moment(product.creation_date).format("YYYY-MM-DD")}
-              onChange={(e) => onInputChange(e, "creation_date")}
-              required
-              autoFocus
-            />
-          </div>
-          <div className="field mt-5">
-            <label
-              htmlFor="processTypeName"
-              className="font-bold"
-              style={{ fontWeight: "bold" }}
-            >
-              Loại sản phẩm
-            </label>
-            <br />
-            <select
-              style={{
-                padding: "13px 0",
-                width: "100%",
-              }}
-              value={selectedValue}
-              onChange={handleSelectChange}
-            >
-              <option value={product.category?.category_id}>
-                {product.category?.category_name}
-              </option>
-              {arrCategory.map((item, index) => {
-                return (
-                  <option value={item.category_id}>{item.category_name}</option>
-                );
-              })}
-            </select>
-          </div>
+        
+         
           <div className="field mt-5">
             <label
               htmlFor="description"
@@ -556,37 +429,8 @@ export default function Product() {
               rows={3}
               cols={20}
             />
-
+            
           </div>
-        {text ==="Thêm mới sản phẩm" ?  <div className="field mt-5">
-            <label
-              htmlFor="description"
-              className="font-bold"
-              style={{ fontWeight: "bold" , marginRight:'20px'}}
-            >
-              Chọn Size:
-            </label>
-            <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('S')}>S</button>
-      <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('M')}>M</button>
-      <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('L')}>L</button>
-      <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('XL')}>XL</button>
-      <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('2XL')}>2XL</button>
-          </div> : <div></div>}
-        {sizes.length >0 ?   <div className="field mt-5" style={{display:'flex'}}>
-            <label
-              htmlFor="processTypeName"
-              className="font-bold"
-              style={{ fontWeight: "bold",marginRight: '20px' }}
-            >
-             Size đã chọn:
-            </label>
-            <br />
-           <div style={{display:'flex'}}>
-           {sizes.map((item,index)=>{
-            return <div style={{marginRight:'15px'}}>{item.size_name}</div>
-           })}
-           </div>
-          </div> : <div></div>}
           <div
             className="field mt-5"
             style={{ display: "flex", flexDirection: "column" }}
@@ -621,7 +465,7 @@ export default function Product() {
             />
             {product && (
               <span>
-                Bạn có chắc chắn muốn xóa sản phẩm{" "}
+                Bạn có chắc chắn muốn xóa loại sản phẩm{" "}
                 <b>{product.product_name}</b>?
               </span>
             )}

@@ -11,6 +11,7 @@ export default function Login() {
       console.log(value);
       if(value.username==="admin" && value.password ==="1234"){
         history.push('/chart')
+        localStorage.setItem('admin','login')
       }else{
         alert('Vui lòng đăng nhập với vai trò admin')
       }

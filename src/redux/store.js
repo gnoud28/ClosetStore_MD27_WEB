@@ -3,11 +3,13 @@ import reduxThunk from "redux-thunk";
 import { ProductReducer } from "./reducer/ProductReducer";
 import { CategoryReducer } from "./reducer/CategoryReducer";
 import { ChartReducer } from "./reducer/ChartReducer";
+import { UserReducer } from "./reducer/UserReducer";
 
 const rootReducer = combineReducers({
   ProductReducer,
   CategoryReducer,
   ChartReducer,
+  UserReducer,
 });
 
 let middleWare = applyMiddleware(reduxThunk);

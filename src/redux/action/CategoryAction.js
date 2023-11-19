@@ -16,3 +16,29 @@ export const GetListCategotyAction = () => {
         }
     }
 }
+
+
+export const UpdateCategotyAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.post('/categoty/updatecategory',value);
+            const action = GetListCategotyAction()
+            dispatch(action)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+export const CreateCategotyAction = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.post('/categoty/createcategory',value);
+            const action = GetListCategotyAction()
+            dispatch(action)
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
