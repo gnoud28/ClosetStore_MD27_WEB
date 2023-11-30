@@ -9,12 +9,14 @@ import AdminChart from "./pages/Chart/Chart";
 import Login from "./pages/Login/Login";
 import Category from "./pages/Category/Category";
 import User from "./pages/User/User";
+import Order from "./pages/Order/Order";
 export const history = createBrowserHistory();
 function App() {
   return (
     <Router history={history}>
       <Switch>
         <AdminTemplate path="/product" exact Component={Product} />
+        <AdminTemplate path="/order" exact Component={Order} />
         <AdminTemplate path="/chart" exact Component={AdminChart} />
         <AdminTemplate path="/category" exact Component={Category} />
         <AdminTemplate path="/user" exact Component={User} />
