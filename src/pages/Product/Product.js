@@ -123,44 +123,84 @@ export default function Product() {
     setDeleteProductsDialog(false);
   };
 
+  // const saveProduct = async () => {
+  //   setSubmitted(true);
+
+  //   if (product.description) {
+  //     let _products = [...products];
+  //     let _product = { ...product };
+  //     console.log(_product);
+  //     if (product.product_id !== "0") {
+  //       const index = findIndexById(product.id);
+
+  //       _products[index] = _product;
+  //       const action = await UpdateProductAction(product);
+  //       await dispatch(action);
+  //       setProductDialog(false);
+  //       toast.current.show({
+  //         severity: "success",
+  //         summary: "Thành công",
+  //         detail: `Cập nhật sản phẩm ${product.product_name} thành công`,
+  //         life: 3000,
+  //       });
+  //       setText("Chỉnh sửa sản phẩm");
+  //     } else {
+  //       const action = await CreateProductAction(_product);
+  //       await dispatch(action);
+  //       toast.current.show({
+  //         severity: "success",
+  //         summary: "Thành công",
+  //         detail: "Tạo  mới sản phẩm thành công",
+  //         life: 3000,
+  //       });
+  //        setProductDialog(false);
+  //     }
+
+  //     // setProducts(_products);
+  //     // setProductDialog(false);
+  //     // setProduct(emptyProduct);
+  //   }
+  // };
   const saveProduct = async () => {
     setSubmitted(true);
-
-    if (product.description) {
-      let _products = [...products];
-      let _product = { ...product };
-      console.log(_product);
-      if (product.product_id !== "0") {
-        const index = findIndexById(product.id);
-
-        _products[index] = _product;
-        const action = await UpdateProductAction(product);
-        await dispatch(action);
-        setProductDialog(false);
-        toast.current.show({
-          severity: "success",
-          summary: "Thành công",
-          detail: `Cập nhật sản phẩm ${product.product_name} thành công`,
-          life: 3000,
-        });
-        setText("Chỉnh sửa sản phẩm");
-      } else {
-        const action = await CreateProductAction(_product);
-        await dispatch(action);
-        toast.current.show({
-          severity: "success",
-          summary: "Thành công",
-          detail: "Tạo  mới sản phẩm thành công",
-          life: 3000,
-        });
-         setProductDialog(false);
-      }
-
-      // setProducts(_products);
-      // setProductDialog(false);
-      // setProduct(emptyProduct);
+  
+    // Validate required fields before saving
+    if (
+      product.product_name &&
+      product.price &&
+      product.quantity &&
+      product.creation_date &&
+      product.category_id &&
+      product.description &&
+      product.image_url &&
+      sizes.length > 0
+    ) {
+      // Your existing logic for saving the product goes here...
+      // ...
+  
+      // Clear the form after successful save
+      setProductDialog(false);
+      setProduct(emptyProduct);
+  
+      // Show success message or perform other actions
+      toast.current.show({
+        severity: "success",
+        summary: "Thành công",
+        detail: "Tạo mới sản phẩm thành công",
+        life: 3000,
+      });
+      setText("Thêm mới sản phẩm");
+    } else {
+      // If any required field is missing, show an error message
+      toast.current.show({
+        severity: "error",
+        summary: "Lỗi",
+        detail: "Vui lòng nhập đủ thông tin sản phẩm",
+        life: 3000,
+      });
     }
   };
+  
 
   const editProduct = (product) => {
     setText("Chỉnh sửa sản phẩm");

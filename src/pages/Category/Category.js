@@ -90,41 +90,51 @@ export default function Category() {
   const saveProduct = async () => {
     setSubmitted(true);
 
-    if (product.description) {
-      let _products = [...products];
-      let _product = { ...product };
-      console.log(_product);
-      if (product.category_id !== "0") {
-        const index = findIndexById(product.id);
+    if (!product.category_name || !product.description || !product.image_url) {
+      toast.current.show({
+        severity: "error",
+        summary: "Lỗi",
+        detail: "Vui lòng nhập đẩy đủ thông tin",
+        life: 3000,
+      });
+    } else  {
 
-        _products[index] = _product;
-        const action = await UpdateCategotyAction(product);
-        await dispatch(action);
-        setProductDialog(false);
-        toast.current.show({
-          severity: "success",
-          summary: "Thành công",
-          detail: `Cập nhật loại sản phẩm ${product.product_name} thành công`,
-          life: 3000,
-        });
-        setText("Chỉnh sửa loại sản phẩm");
-      } else {
-        const action = await CreateCategotyAction(_product);
-        await dispatch(action);
-        toast.current.show({
-          severity: "success",
-          summary: "Thành công",
-          detail: "Tạo  mới loại sản phẩm thành công",
-          life: 3000,
-        });
-         setProductDialog(false);
+      if (product.description) {
+        let _products = [...products];
+        let _product = { ...product };
+        console.log(_product);
+        if (product.category_id !== "0") {
+          const index = findIndexById(product.id);
+  
+          _products[index] = _product;
+          const action = await UpdateCategotyAction(product);
+          await dispatch(action);
+          setProductDialog(false);
+          toast.current.show({
+            severity: "success",
+            summary: "Thành công",
+            detail: `Cập nhật loại sản phẩm ${product.product_name} thành công`,
+            life: 3000,
+          });
+          setText("Chỉnh sửa loại sản phẩm");
+        } else {
+          const action = await CreateCategotyAction(_product);
+          await dispatch(action);
+          toast.current.show({
+            severity: "success",
+            summary: "Thành công",
+            detail: "Tạo  mới loại sản phẩm thành công",
+            life: 3000,
+          });
+           setProductDialog(false);
+        }
+        // setProducts(_products);
+        // setProductDialog(false);
+        // setProduct(emptyProduct);
       }
-
-      // setProducts(_products);
-      // setProductDialog(false);
-      // setProduct(emptyProduct);
+    };
     }
-  };
+
 
   const editProduct = (product) => {
     setText("Chỉnh sửa loại sản phẩm");
