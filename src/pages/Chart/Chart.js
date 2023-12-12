@@ -15,14 +15,14 @@ const AdminChart = (props) => {
   const [year, setYear] = useState("2023");
   const [arr, setArr] = useState([]);
   const [arr1, setArr1] = useState([]);
-  useEffect(() => { 
+  useEffect(() => {
     setArr(
-        arrStatical?.map((item, index) => {
+      arrStatical?.map((item, index) => {
         return item[0].orderCount
       })
     );
     setArr1(
-        arrStatical?.map((item, index) => {
+      arrStatical?.map((item, index) => {
         return item[0].totalAmount
       })
     );
@@ -97,7 +97,7 @@ const AdminChart = (props) => {
     const textColorSecondary1 = documentStyle.getPropertyValue(
       "--text-color-secondary"
     );
-    const surfaceBorder1= documentStyle.getPropertyValue("--surface-border");
+    const surfaceBorder1 = documentStyle.getPropertyValue("--surface-border");
     const data1 = {
       labels: [
         "Tháng 1",
@@ -158,7 +158,7 @@ const AdminChart = (props) => {
 
 
 
-  }, [arr,arr1]);
+  }, [arr, arr1]);
   const [chartData, setChartData] = useState({});
   const [chartOptions, setChartOptions] = useState({});
   const [chartData1, setChartData1] = useState({});
@@ -178,13 +178,13 @@ const AdminChart = (props) => {
                   <div className="post-subject">
                     <div className="university-tag">
                       <div className="Search-result">
-                        <h2 style={{lineHeight:'20px'}}>
-                          
+                        <h2 style={{ lineHeight: '20px' }}>
+
                           <strong>Thống kê số lượng order trong năm 2023</strong>
                         </h2>
                       </div>
                     </div>
-                    
+
                   </div>
                 </div>
               </div>
@@ -206,11 +206,11 @@ const AdminChart = (props) => {
                           <div className="main-wraper">
                             <div style={{ display: "flex" }}>
                               <div className="main-title">
-                               
+
                               </div>
-                            
+
                             </div>
-                            <div className="card" style={{marginTop:'50px'}}>
+                            <div className="card" style={{ marginTop: '50px' }}>
                               <Chart
                                 type="line"
                                 data={chartData}
@@ -228,7 +228,7 @@ const AdminChart = (props) => {
           </div>
         </section>
       </div>
-      <div style={{marginTop:'100px'}}>
+      <div style={{ marginTop: '100px' }}>
         <section>
           <div className="top-area bluesh high-opacity">
             <div
@@ -241,13 +241,13 @@ const AdminChart = (props) => {
                   <div className="post-subject">
                     <div className="university-tag">
                       <div className="Search-result">
-                        <h2 style={{lineHeight:'20px'}}>
-                          
+                        <h2 style={{ lineHeight: '20px' }}>
+
                           <strong>Thống kê tổng tiền theo từng tháng trong năm 2023</strong>
                         </h2>
                       </div>
                     </div>
-                    
+
                   </div>
                 </div>
               </div>
@@ -269,11 +269,11 @@ const AdminChart = (props) => {
                           <div className="main-wraper">
                             <div style={{ display: "flex" }}>
                               <div className="main-title">
-                               
+
                               </div>
-                            
+
                             </div>
-                            <div className="card" style={{marginTop:'50px'}}>
+                            <div className="card" style={{ marginTop: '50px' }}>
                               <Chart
                                 type="line"
                                 data={chartData1}
