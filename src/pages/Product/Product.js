@@ -126,7 +126,18 @@ export default function Product() {
   const saveProduct = async () => {
     setSubmitted(true);
 
-    if (product.description) {
+    if (!product.product_name || !product.description || !product.price || !product.image_url) {
+      // Handle the case where required fields are empty for a new product
+      // Display an error message or take necessary actions
+      // For example:
+      toast.current.show({
+        severity: "error",
+        summary: "Lỗi",
+        detail: "Vui lòng điền đầy đủ thông tin cho sản phẩm",
+        life: 3000,
+      });
+      return; // Exit the function if any required field is empty for a new product
+    } else if (product.description) {
       let _products = [...products];
       let _product = { ...product };
       console.log(_product);
