@@ -13,7 +13,7 @@ export const GetListCategotyAction = () => {
 
         } catch (error) {
             console.log(error);
-        }
+        }   
     }
 }
 
@@ -37,6 +37,17 @@ export const CreateCategotyAction = (value) => {
             const action = GetListCategotyAction()
             dispatch(action)
 
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+export const DeleteCategoryAction = (category_id) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.delete(`/categoty/deletecategory/${category_id}`);
+            const action = GetListCategotyAction();
+            dispatch(action);
         } catch (error) {
             console.log(error);
         }

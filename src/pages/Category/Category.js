@@ -10,7 +10,7 @@ import { InputText } from "primereact/inputtext";
 import { useDispatch, useSelector } from "react-redux";
 import { storage_bucket } from "./../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { CreateCategotyAction, GetListCategotyAction, UpdateCategotyAction } from "../../redux/action/CategoryAction";
+import { CreateCategotyAction, DeleteCategoryAction, GetListCategotyAction, UpdateCategotyAction } from "../../redux/action/CategoryAction";
 
 export default function Category() {
   const dispatch = useDispatch();
@@ -143,16 +143,20 @@ export default function Category() {
     setTempProduct({ ...product });
   };
 
+const confirmDeleteProduct = (product) => {
+    setProduct(product);
+    setDeleteProductDialog(true);
+  };
 
   const deleteProduct = async () => {
-    // const action = await DeleteProductAction(product.category_id);
-    // await dispatch(action);
+    const action = await DeleteCategoryAction(product.category_id);
+    await dispatch(action);
     setDeleteProductDialog(false);
     setProduct(emptyProduct);
     toast.current.show({
-      severity: "error",
+      severity: "success",
       summary: "Thành công",
-      detail: `Xóa loại sản phẩm ${product.product_name} thành công`,
+      detail: `Xóa loại sản phẩm ${product.category_id} thành công`,
       life: 3000,
       options: {
         style: {
@@ -268,16 +272,17 @@ export default function Category() {
           className="mr-2"
           onClick={() => editProduct(rowData)}
         />
-        {/* <Button
+        <Button
           icon="pi pi-trash"
           rounded
           outlined
           severity="danger"
           onClick={() => confirmDeleteProduct(rowData)}
-        /> */}
+        />
       </React.Fragment>
     );
   };
+  
 
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
