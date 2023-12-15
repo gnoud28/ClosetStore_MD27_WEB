@@ -45,7 +45,7 @@ export const CreateCategotyAction = (value) => {
 export const DeleteCategoryAction = (category_id) => {
     return async (dispatch) => {
         try {
-            let result = await http.delete(`/categoty/deletecategory/${category_id}`);
+            let result = await http.delete(`/categoty/deleteCate/${category_id}`);
             const action = GetListCategotyAction();
             dispatch(action);
         } catch (error) {

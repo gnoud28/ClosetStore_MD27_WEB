@@ -191,7 +191,7 @@ export default function Product() {
     setDeleteProductDialog(false);
     setProduct(emptyProduct);
     toast.current.show({
-      severity: "error",
+      severity: "success",
       summary: "Thành công",
       detail: `Xóa sản phẩm ${product.product_name} thành công`,
       life: 3000,
