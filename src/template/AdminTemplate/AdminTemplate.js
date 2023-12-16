@@ -6,31 +6,31 @@ import { http } from "../../utis/reponse";
 export const AdminTemplate = (props) => {
   const { Component, ...restProps } = props;
   const [noti, setNoti] = useState({});
-const[tb,setTB] = useState('')
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let result = await http.get('/cart/getlistnoti');
-        if (Array.isArray(result.data.data)) {
-          setNoti(result.data.data);
-        } else {
-          console.error("Received data is not an array:", result.data.data);
-          setNoti(result.data.data);
-          setTB("list")
-        }
-      } catch (error) {
-        console.log(error.response.data.message);
-       setTB(error.response.data.message)
-      }
-    };
-  
-    // Call `fetchData` initially and then every 3 seconds
-    fetchData();
-    const interval = setInterval(fetchData, 4000);
-  
-    // Clean up the interval on component unmount to avoid memory leaks
-    return () => clearInterval(interval);
-  }, []);
+  const [tb, setTB] = useState('')
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       let result = await http.get('/cart/getlistnoti');
+  //       if (Array.isArray(result.data.data)) {
+  //         setNoti(result.data.data);
+  //       } else {
+  //         console.error("Received data is not an array:", result.data.data);
+  //         setNoti(result.data.data);
+  //         setTB("list")
+  //       }
+  //     } catch (error) {
+  //       console.log(error.response.data.message);
+  //      setTB(error.response.data.message)
+  //     }
+  //   };
+
+  //   // Call `fetchData` initially and then every 3 seconds
+  //   fetchData();
+  //   const interval = setInterval(fetchData, 4000);
+
+  //   // Clean up the interval on component unmount to avoid memory leaks
+  //   return () => clearInterval(interval);
+  // }, []);
   console.log(tb)
   return (
     <Route
@@ -39,23 +39,23 @@ const[tb,setTB] = useState('')
         if (localStorage.getItem("admin")) {
           return (
             <div>
-             {tb === "list"?
-              <div style={{ position: "absolute", right: "40px", top: "60px", zIndex:999, cursor:'pointer' }}>
-              <div
-                style={{
-                  border: "1px solid black",
-                  borderRadius: "5px",
-                  padding: "20px 40px",
-                  backgroundColor: "#f0f0f0",
-                  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-                  color: "#333",
-                  fontWeight: "bold",
-                  fontFamily: "Arial, sans-serif",
-                }}
-              >
-              <NavLink to="/order"> {noti.user?.full_name} vừa đặt hàng</NavLink>
-              </div>
-            </div> : <div></div>}
+              {tb === "list" ?
+                <div style={{ position: "absolute", right: "40px", top: "60px", zIndex: 999, cursor: 'pointer' }}>
+                  <div
+                    style={{
+                      border: "1px solid black",
+                      borderRadius: "5px",
+                      padding: "20px 40px",
+                      backgroundColor: "#f0f0f0",
+                      boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+                      color: "#333",
+                      fontWeight: "bold",
+                      fontFamily: "Arial, sans-serif",
+                    }}
+                  >
+                    <NavLink to="/order"> {noti.user?.full_name} vừa đặt hàng</NavLink>
+                  </div>
+                </div> : <div></div>}
               {/* Banner */}
               <a
                 href="https://webpixels.io/components?ref=codepen"

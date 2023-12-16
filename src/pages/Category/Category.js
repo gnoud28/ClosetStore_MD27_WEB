@@ -21,7 +21,7 @@ export default function Category() {
   };
   const [selectedValue, setSelectedValue] = useState("");
 
- 
+
   const uploadFile = (e) => {
     let file = e.target.files[0];
     let fileRef = ref(storage_bucket, file.name);
@@ -97,7 +97,7 @@ export default function Category() {
         detail: "Vui lòng nhập đẩy đủ thông tin",
         life: 3000,
       });
-    } else  {
+    } else {
 
       if (product.description) {
         let _products = [...products];
@@ -105,7 +105,7 @@ export default function Category() {
         console.log(_product);
         if (product.category_id !== "0") {
           const index = findIndexById(product.id);
-  
+
           _products[index] = _product;
           const action = await UpdateCategotyAction(product);
           await dispatch(action);
@@ -126,14 +126,14 @@ export default function Category() {
             detail: "Tạo  mới loại sản phẩm thành công",
             life: 3000,
           });
-           setProductDialog(false);
+          setProductDialog(false);
         }
         // setProducts(_products);
         // setProductDialog(false);
         // setProduct(emptyProduct);
       }
     };
-    }
+  }
 
 
   const editProduct = (product) => {
@@ -143,27 +143,17 @@ export default function Category() {
     setTempProduct({ ...product });
   };
 
-const confirmDeleteProduct = (product) => {
+  const confirmDeleteProduct = (product) => {
     setProduct(product);
     setDeleteProductDialog(true);
   };
 
   const deleteProduct = async () => {
-    const action = await DeleteCategoryAction(product.category_id);
-    await dispatch(action);
+    const action = DeleteCategoryAction(product.category_id, product.category_name);
+    dispatch(action);
     setDeleteProductDialog(false);
     setProduct(emptyProduct);
-    toast.current.show({
-      severity: "success",
-      summary: "Thành công",
-      detail: `Xóa loại sản phẩm ${product.category_id} thành công`,
-      life: 3000,
-      options: {
-        style: {
-          zIndex: 100,
-        },
-      },
-    });
+
   };
 
   const findIndexById = (id) => {
@@ -282,7 +272,7 @@ const confirmDeleteProduct = (product) => {
       </React.Fragment>
     );
   };
-  
+
 
   const header = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
@@ -382,10 +372,10 @@ const confirmDeleteProduct = (product) => {
               sortable
               style={{ minWidth: "12rem" }}
             ></Column>
-          
-           
+
+
             <Column
-            style={{ minWidth: "12rem" }}
+              style={{ minWidth: "12rem" }}
               field="image_url"
               header="Hình ảnh"
               body={imageBodyTemplate}
@@ -426,8 +416,8 @@ const confirmDeleteProduct = (product) => {
               autoFocus
             />
           </div>
-        
-         
+
+
           <div className="field mt-5">
             <label
               htmlFor="description"
@@ -444,7 +434,7 @@ const confirmDeleteProduct = (product) => {
               rows={3}
               cols={20}
             />
-            
+
           </div>
           <div
             className="field mt-5"
