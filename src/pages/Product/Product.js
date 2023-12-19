@@ -39,11 +39,11 @@ export default function Product() {
     setSizes(newSizes);
     const updatedProduct = { ...product };
 
-  // Cập nhật thông tin kích thước cho sản phẩm
-  updatedProduct.sizes = newSizes;
+    // Cập nhật thông tin kích thước cho sản phẩm
+    updatedProduct.sizes = newSizes;
 
-  // Cập nhật thông tin sản phẩm
-  setProduct(updatedProduct);
+    // Cập nhật thông tin sản phẩm
+    setProduct(updatedProduct);
   };
   console.log(sizes)
   const [selectedValue, setSelectedValue] = useState("");
@@ -164,7 +164,7 @@ export default function Product() {
           detail: "Tạo  mới sản phẩm thành công",
           life: 3000,
         });
-         setProductDialog(false);
+        setProductDialog(false);
       }
 
       // setProducts(_products);
@@ -299,7 +299,7 @@ export default function Product() {
   const formatCurrency = (value) => {
     return value.toLocaleString("en-US", {
       style: "currency",
-      currency: "USD",
+      currency: "VND",
     });
   };
   const priceBodyTemplate = (rowData) => {
@@ -446,8 +446,16 @@ export default function Product() {
               sortable
               style={{ minWidth: "12rem" }}
             ></Column>
+
             <Column
-            style={{ minWidth: "12rem" }}
+              field="quantity"
+              header="Số lượng sản phẩm"
+              sortable
+              style={{ minWidth: "12rem" }}
+            ></Column>
+
+            <Column
+              style={{ minWidth: "12rem" }}
               field="image_url"
               header="Hình ảnh"
               body={imageBodyTemplate}
@@ -484,6 +492,23 @@ export default function Product() {
               id="product_name"
               value={product.product_name}
               onChange={(e) => onInputChange(e, "product_name")}
+              required
+              autoFocus
+            />
+          </div>
+          <div className="field">
+            <label
+              htmlFor="processTypeName"
+              className="font-bold"
+              style={{ fontWeight: "bold" }}
+            >
+              Số lượng sản phẩm
+            </label>
+            <br />
+            <InputText
+              id="quantity"
+              value={product.quantity}
+              onChange={(e) => onInputChange(e, "quantity")}
               required
               autoFocus
             />
@@ -569,34 +594,34 @@ export default function Product() {
             />
 
           </div>
-        {text ==="Thêm mới sản phẩm" ?  <div className="field mt-5">
+          {text === "Thêm mới sản phẩm" ? <div className="field mt-5">
             <label
               htmlFor="description"
               className="font-bold"
-              style={{ fontWeight: "bold" , marginRight:'20px'}}
+              style={{ fontWeight: "bold", marginRight: '20px' }}
             >
               Chọn Size:
             </label>
             <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('S')}>S</button>
-      <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('M')}>M</button>
-      <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('L')}>L</button>
-      <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('XL')}>XL</button>
-      <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('2XL')}>2XL</button>
+            <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('M')}>M</button>
+            <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('L')}>L</button>
+            <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('XL')}>XL</button>
+            <button style={{ marginRight: '10px' }} onClick={() => handleSizeClick('2XL')}>2XL</button>
           </div> : <div></div>}
-        {sizes.length >0 ?   <div className="field mt-5" style={{display:'flex'}}>
+          {sizes.length > 0 ? <div className="field mt-5" style={{ display: 'flex' }}>
             <label
               htmlFor="processTypeName"
               className="font-bold"
-              style={{ fontWeight: "bold",marginRight: '20px' }}
+              style={{ fontWeight: "bold", marginRight: '20px' }}
             >
-             Size đã chọn:
+              Size đã chọn:
             </label>
             <br />
-           <div style={{display:'flex'}}>
-           {sizes.map((item,index)=>{
-            return <div style={{marginRight:'15px'}}>{item.size_name}</div>
-           })}
-           </div>
+            <div style={{ display: 'flex' }}>
+              {sizes.map((item, index) => {
+                return <div style={{ marginRight: '15px' }}>{item.size_name}</div>
+              })}
+            </div>
           </div> : <div></div>}
           <div
             className="field mt-5"
