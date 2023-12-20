@@ -6,6 +6,7 @@ import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Dialog } from "primereact/dialog";
+import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { useDispatch, useSelector } from "react-redux";
 import { storage_bucket } from "./../../firebase";
@@ -15,7 +16,7 @@ import {
   GetListCategotyAction,
   UpdateCategotyAction,
 } from "../../redux/action/CategoryAction";
-import { GetListOrderAction } from "../../redux/action/OrderAction";
+import { GetListOrderAction, UpdateOrder } from "../../redux/action/OrderAction";
 
 export default function Order() {
   const dispatch = useDispatch();
@@ -90,10 +91,48 @@ export default function Order() {
     setDeleteProductsDialog(false);
   };
 
+  // const saveProduct = async () => {
+  //   setSubmitted(true);
+
+  //   if (product.description) {
+  //     let _products = [...products];
+  //     let _product = { ...product };
+  //     console.log(_product);
+  //     if (product.order_id !== "0") {
+  //       const index = findIndexById(product.id);
+
+  //       _products[index] = _product;
+  //       const action = await UpdateOrder(product);
+  //       await dispatch(action);
+  //       setProductDialog(false);
+  //       toast.current.show({
+  //         severity: "success",
+  //         summary: "Thành công",
+  //         detail: `Cập trạng thái đơn hàng ${product.order_id} thành công`,
+  //         life: 3000,
+  //       });
+  //       setText("Thông tin đơn hàng");
+  //       // } else {
+  //       //   const action = await CreateCategotyAction(_product);
+  //       //   await dispatch(action);
+  //       //   toast.current.show({
+  //       //     severity: "success",
+  //       //     summary: "Thành công",
+  //       //     detail: "Tạo  mới đơn hàng thành công",
+  //       //     life: 3000,
+  //       //   });
+  //       setProductDialog(false);
+  //     }
+
+  //     // setProducts(_products);
+  //     // setProductDialog(false);
+  //     // setProduct(emptyProduct);
+  //   }
+  // };
   const saveProduct = async () => {
     setSubmitted(true);
 
-    if (product.description) {
+    if (product.status) {
       let _products = [...products];
       let _product = { ...product };
       console.log(_product);
@@ -101,13 +140,13 @@ export default function Order() {
         const index = findIndexById(product.id);
 
         _products[index] = _product;
-        const action = await UpdateCategotyAction(product);
+        const action = await UpdateOrder(product);
         await dispatch(action);
         setProductDialog(false);
         toast.current.show({
           severity: "success",
           summary: "Thành công",
-          detail: `Cập nhật đơn hàng ${product.product_name} thành công`,
+          detail: `Cập trạng thái đơn hàng ${product.product_name} thành công`,
           life: 3000,
         });
         setText("Thông tin đơn hàng");
@@ -122,12 +161,9 @@ export default function Order() {
         });
         setProductDialog(false);
       }
-
-      // setProducts(_products);
-      // setProductDialog(false);
-      // setProduct(emptyProduct);
     }
   };
+
 
   const editProduct = (product) => {
     setText("Thông tin đơn hàng");
@@ -166,6 +202,18 @@ export default function Order() {
 
     return index;
   };
+
+
+
+
+  const statuses = [
+    { label: 'Chờ xác nhận', value: 'Chờ xác nhận' },
+    { label: 'Đã Xác Nhận', value: 'Đã Xác Nhận' },
+    { label: 'Giao Hàng Thành Công', value: 'Giao Hàng Thành Công' }
+  ];
+
+
+
 
   const exportCSV = () => {
     dt.current.exportCSV();
@@ -293,22 +341,6 @@ export default function Order() {
       />
     </React.Fragment>
   );
-  const deleteProductsDialogFooter = (
-    <React.Fragment>
-      <Button
-        label="No"
-        icon="pi pi-times"
-        outlined
-        onClick={hideDeleteProductsDialog}
-      />
-      <Button
-        label="Yes"
-        icon="pi pi-check"
-        severity="danger"
-        onClick={deleteSelectedProducts}
-      />
-    </React.Fragment>
-  );
 
   return (
     <div className="app-main__outer" style={{ margin: "20px 30px" }}>
@@ -364,6 +396,14 @@ export default function Order() {
               sortable
 
             ></Column>
+            <Column
+              style={{ minWidth: "12rem" }}
+              field="status"
+              header="Trạng thái đơn hàng"
+              sortable
+
+            ></Column>
+
 
             <Column
               body={actionBodyTemplate}
@@ -416,6 +456,47 @@ export default function Order() {
               autoFocus
             />
           </div>
+
+
+
+          {/* <div className="field">
+            <label
+              htmlFor="processTypeName"
+              className="font-bold"
+              style={{ fontWeight: "bold" }}
+            >
+              Trạng thái đơn hàng
+            </label>
+            <br />
+            <InputText
+              id="Người mua"
+              value={product.status}
+              onChange={(e) => onInputChange(e, "status")}
+              required
+              autoFocus
+            />
+          </div> */}
+
+          <div className="field">
+            <label
+              htmlFor="processTypeName"
+              className="font-bold"
+              style={{ fontWeight: "bold" }}
+            >
+              Trạng thái đơn hàng
+            </label>
+            <br />
+            {/* Sử dụng Dropdown để hiển thị danh sách trạng thái */}
+            <Dropdown
+              value={product.status} // Giá trị hiện tại của trạng thái
+              options={statuses} // Danh sách các trạng thái
+              onChange={(e) => onInputChange(e, "status")} // Sự kiện khi giá trị thay đổi
+              optionLabel="label" // Thuộc tính để hiển thị nhãn của mỗi trạng thái
+              placeholder="Chọn trạng thái" // Placeholder khi không có trạng thái nào được chọn
+            />
+          </div>
+
+
           <div className="field">
             <label
               htmlFor="processTypeName"
@@ -432,6 +513,7 @@ export default function Order() {
               autoFocus
             />
           </div>
+
           <div className="field">
             <label
               htmlFor="processTypeName"
@@ -454,7 +536,7 @@ export default function Order() {
               className="font-bold"
               style={{ fontWeight: "bold" }}
             >
-             Email
+              Email
             </label>
             <br />
             <InputText
@@ -470,7 +552,7 @@ export default function Order() {
             <label
               htmlFor="processTypeName"
               className="font-bold"
-              style={{ fontWeight: "bold" ,marginBottom:'10px'}}
+              style={{ fontWeight: "bold", marginBottom: '10px' }}
             >
               Danh sách sản phẩm
             </label>
@@ -478,12 +560,12 @@ export default function Order() {
             <br />
             {product.OrderDetails?.map((item, index) => {
               return (
-                <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:'10px'}}>
-                  <div style={{padding:'10px',border:'1px solid black'}}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  <div style={{ padding: '10px', border: '1px solid black' }}>
                     <div><img src={item.product?.image_url} /> </div>
-                    <div style={{fontWeight:800}}> {item.product?.product_name}</div>
+                    <div style={{ fontWeight: 800 }}> {item.product?.product_name}</div>
                     <div>Số lượng: {item.quantity}</div>
-                    
+
                     <div>Giá tiền : {item.product?.price}</div>
                   </div>
                 </div>
@@ -492,7 +574,7 @@ export default function Order() {
           </div>
         </Dialog>
 
-        <Dialog
+        {/* <Dialog
           visible={deleteProductDialog}
           style={{ width: "32rem" }}
           breakpoints={{ "960px": "75vw", "641px": "90vw" }}
@@ -513,9 +595,9 @@ export default function Order() {
               </span>
             )}
           </div>
-        </Dialog>
+        </Dialog> */}
 
-        <Dialog
+        {/* <Dialog
           visible={deleteProductsDialog}
           style={{ width: "32rem" }}
           breakpoints={{ "960px": "75vw", "641px": "90vw" }}
@@ -535,7 +617,7 @@ export default function Order() {
               </span>
             )}
           </div>
-        </Dialog>
+        </Dialog> */}
       </div>
     </div>
   );

@@ -49,18 +49,6 @@ export const DeleteCategoryAction = (category_id, category_name) => {
             let result = await http.delete(`/categoty/deleteCate/${category_id}`);
             const action = GetListCategotyAction()
             dispatch(action)
-            // toast.current.show({
-            //     severity: "success",
-            //     summary: "Thành công",
-            //     detail: `Xóa loại sản phẩm ${category_name} thành công`,
-            //     life: 3000,
-            //     options: {
-            //       style: {
-            //         zIndex: 100,
-            //       },
-            //     },
-            //   });
-
             alert(`Xóa loại sản phẩm ${category_name} thành công`)
         } catch (error) {
             console.log(error.response.data.message);

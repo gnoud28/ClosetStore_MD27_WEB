@@ -16,3 +16,16 @@ export const GetListOrderAction = () => {
         }
     }
 }
+
+
+export const UpdateOrder = (value) => {
+    return async (dispatch) => {
+        try {
+            let result = await http.post('/order/updateOrder', value);
+            const action = GetListOrderAction()
+            dispatch(action)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
