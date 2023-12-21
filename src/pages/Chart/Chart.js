@@ -4,9 +4,48 @@ import { useState } from "react";
 import { Chart } from "primereact/chart";
 import { NavLink } from "react-router-dom";
 import { GetStatisticalAction } from "../../redux/action/ChartAction";
+
+
 const AdminChart = (props) => {
+
   const dispatch = useDispatch();
   const { arrStatical } = useSelector((root) => root.ChartReducer);
+  const [apiData, setApiData] = useState(null); // State để lưu trữ dữ liệu từ API
+
+
+
+  const [startDate, setStartDate] = useState(""); // State cho ngày bắt đầu
+  const [endDate, setEndDate] = useState(""); // State cho ngày kết thúc
+
+  const handleStartDateChange = (event) => {
+    setStartDate(event.target.value); // Cập nhật ngày bắt đầu khi người dùng thay đổi
+  };
+
+  const handleEndDateChange = (event) => {
+    setEndDate(event.target.value); // Cập nhật ngày kết thúc khi người dùng thay đổi
+  };
+
+
+  const handleStatistics = () => {
+    // Gọi API khi người dùng nhấn nút "Thống kê"
+    // Gửi yêu cầu API với startDate và endDate
+    const apiUrl = `http://localhost:5000/api/v1/chart/successful-orders/?startDate=${startDate}&endDate=${endDate}`;
+
+    fetch(apiUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        // Cập nhật dữ liệu từ API vào state
+        setApiData(data);
+        // Các xử lý khác nếu cần
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        // Xử lý lỗi khi gọi API nếu cần
+      });
+  };
+
+
+
   console.log(arrStatical);
   useEffect(() => {
     const action = GetStatisticalAction(year);
@@ -163,9 +202,62 @@ const AdminChart = (props) => {
   const [chartOptions, setChartOptions] = useState({});
   const [chartData1, setChartData1] = useState({});
   const [chartOptions1, setChartOptions1] = useState({});
+
   return (
+
     <div>
+
       <div className="mb-9">
+
+
+        <section>
+          <div className="top-area bluesh high-opacity">
+            <div
+              className="bg-image"
+              style={{ backgroundImage: "url(images/resources/top-bg.jpg)" }}
+            />
+            <div className="container mb-9">
+              <div className="row">
+                <div className="col-lg-12">
+                  <div className="post-subject">
+                    <div className="university-tag">
+                      <div className="Search-result">
+                        <h2 style={{ lineHeight: '70px' }}>
+                          <strong>Thống kê theo ngày</strong>
+
+                          <div>
+                            <div>
+                              <label>Ngày bắt đầu:</label>
+                              <input type="date" value={startDate} onChange={handleStartDateChange} />
+                              <label>Ngày kết thúc:</label>
+                              <input type="date" value={endDate} onChange={handleEndDateChange} />
+                              <button onClick={handleStatistics}>Thống kê</button>
+                            </div>
+
+                            <h2 style={{ lineHeight: '70px' }}>
+                              {apiData && (
+                                <div>
+                                  <p>Số lượng order: {apiData.data[0].orderCount}</p>
+                                  <p>Tổng tiền: {apiData.data[0].totalAmount}</p>
+                                </div>
+                              )}
+                            </h2>
+
+                          </div>
+                        </h2>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+
+
         <section>
           <div className="top-area bluesh high-opacity">
             <div
@@ -191,6 +283,14 @@ const AdminChart = (props) => {
             </div>
           </div>
         </section>
+
+
+
+
+
+
+
+
         <section>
           <div className="gap" style={{ padding: 0 }}>
             <div className="container">

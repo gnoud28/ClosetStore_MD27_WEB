@@ -1,4 +1,5 @@
 import { http } from "../../utis/reponse";
+import axios from 'axios';
 
 export const GetStatisticalAction = () => {
     return async (dispatch) => {
@@ -37,3 +38,29 @@ export const GetStatisticalAction = () => {
         }
     }
 }
+
+
+export const getOrderStatistics = (startDate, endDate) => {
+    return async (dispatch) => {
+      try {
+        const response = await axios.get('/chart/successful-orders/', {
+          params: {
+            startDate,
+            endDate,
+          },
+        });
+  
+        const { orderCount, totalAmount } = response.data; // Đảm bảo cấu trúc phản hồi từ API
+  
+        dispatch({
+          type: 'GET_ORDER_STATISTICS',
+          orderCount,
+          totalAmount,
+        });
+  
+        localStorage.setItem('orderStatistics', JSON.stringify({ orderCount, totalAmount }));
+      } catch (error) {
+        console.error('Lỗi:', error);
+      }
+    };
+  };
