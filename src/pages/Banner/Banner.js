@@ -27,7 +27,7 @@ export default function Banner() {
   }, []);
 
   useEffect(() => {
-    console.log(arrBanner); // Đăng nhập dữ liệu đã nhận được
+    console.log("Dữ liệu arrBanner khi nhận được từ Redux:", arrBanner);
     setProducts(arrBanner);
   }, [arrBanner]);
 
@@ -117,11 +117,11 @@ export default function Banner() {
         toast.current.show({
           severity: "success",
           summary: "Thành công",
-          detail: `Cập nhật loại sản phẩm ${_product.product_name} thành công`,
+          detail: `Cập nhật banner ${_product.title} thành công`,
           life: 3000,
         });
 
-        setText("Chỉnh sửa loại sản phẩm");
+        setText("Chỉnh sửa banner");
       } else {
         const action = await CreateBannerAction(_product);
         await dispatch(action);
@@ -146,7 +146,7 @@ export default function Banner() {
 
 
   const editProduct = (product) => {
-    setText("Chỉnh sửa loại sản phẩm");
+    setText("Chỉnh sửa banner");
     setProduct({ ...product }); // Đảm bảo rằng dữ liệu sản phẩm được cập nhật khi chỉnh sửa
     setTempProduct({ ...product });
     setProductDialog(true);
@@ -228,7 +228,7 @@ export default function Banner() {
           severity="success"
           onClick={() => {
             openNew();
-            setText("Thêm mới loại sản phẩm");
+            setText("Thêm mới banner");
           }}
         />
         {/* <Button label="Delete" icon="pi pi-trash" severity="danger" onClick={confirmDeleteSelected} disabled={!selectedProducts || !selectedProducts.length} /> */}
@@ -251,8 +251,8 @@ export default function Banner() {
   const imageBodyTemplate = (rowData) => {
     return (
       <img
-        src={rowData.ImagesUrl}
-        alt={rowData.title || "No Title"}
+        src={`${rowData.ImagesUrl}`}
+        alt={rowData.image}
         className="shadow-2 border-round"
         style={{ width: "64px" }}
       />
@@ -366,20 +366,22 @@ export default function Banner() {
               field="banner_id"
               header="Mã"
               sortable
+
               style={{ minWidth: "12rem" }}
             ></Column>
-            {/* <Column
+            <Column
               field="title"
               header="Tên"
+
               sortable
               style={{ minWidth: "11rem" }}
             ></Column>
             <Column
               style={{ minWidth: "12rem" }}
               field="ImagesUrl"
-              header="Hình ảnh"
               body={imageBodyTemplate}
-            ></Column> */}
+              header="Hình ảnh"
+            ></Column>
 
             <Column
               body={actionBodyTemplate}
@@ -406,7 +408,7 @@ export default function Banner() {
               className="font-bold"
               style={{ fontWeight: "bold" }}
             >
-              Tên loại sản phẩm
+              Tên Banner
             </label>
             <br />
             <InputText

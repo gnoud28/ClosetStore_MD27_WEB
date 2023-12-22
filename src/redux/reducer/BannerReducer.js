@@ -1,15 +1,16 @@
 const stateDefault = {
-    arrBanner:[]
+    arrBanner: []
 }
 
 export const BannerReducer = (state = stateDefault, action) => {
     switch (action.type) {
-
         case 'GET_LIST_BANNER': {
-            state.arrBanner = action.arrBanner;
-            return { ...state }
+            return {
+                ...state,
+                arrBanner: action.arrBanner // Cập nhật arrBanner trong bản sao mới của state
+            };
         }
-      
-        default: return state;
+        default:
+            return state;
     }
 }
