@@ -10,6 +10,7 @@ import Login from "./pages/Login/Login";
 import Category from "./pages/Category/Category";
 import User from "./pages/User/User";
 import Order from "./pages/Order/Order";
+import Banner from "./pages/Banner/Banner";
 export const history = createBrowserHistory();
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <AdminTemplate path="/chart" exact Component={AdminChart} />
         <AdminTemplate path="/category" exact Component={Category} />
         <AdminTemplate path="/user" exact Component={User} />
+        <AdminTemplate path="/banner" exact Component={Banner} />
         <Route path="/" exact component={Login} />
       </Switch>
     </Router>

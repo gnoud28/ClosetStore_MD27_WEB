@@ -179,10 +179,16 @@ export const AdminTemplate = (props) => {
                           </NavLink>
                         </li>
                         <li className="nav-item">
+                          <NavLink to="/banner" className="nav-link">
+                            <i className="bi bi-bookmarks" /> Banner
+                          </NavLink>
+                        </li>
+                        <li className="nav-item">
                           <NavLink to="/user" className="nav-link">
                             <i className="bi bi-people" /> Người dùng
                           </NavLink>
                         </li>
+                       
                       </ul>
                       {/* Divider */}
                       <hr className="navbar-divider my-2 opacity-20" />
