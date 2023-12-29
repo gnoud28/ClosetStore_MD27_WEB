@@ -11,6 +11,7 @@ import Category from "./pages/Category/Category";
 import User from "./pages/User/User";
 import Order from "./pages/Order/Order";
 import Banner from "./pages/Banner/Banner";
+
 export const history = createBrowserHistory();
 function App() {
   return (

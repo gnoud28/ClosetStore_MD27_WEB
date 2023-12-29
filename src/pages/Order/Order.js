@@ -4,6 +4,7 @@ import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
 import { Button } from "primereact/button";
 import { Toolbar } from "primereact/toolbar";
+import axios from 'axios';
 import { InputTextarea } from "primereact/inputtextarea";
 import { Dialog } from "primereact/dialog";
 import { Dropdown } from "primereact/dropdown";
@@ -19,6 +20,30 @@ import {
 import { GetListOrderAction, UpdateOrder } from "../../redux/action/OrderAction";
 
 export default function Order() {
+
+  const [filteredStatus, setFilteredStatus] = useState(""); // State để lưu trạng thái đơn hàng được lọc
+  const [filteredOrders, setFilteredOrders] = useState([]); // State để lưu danh sách đơn hàng được lọc
+  const clearFilters = () => {
+    setFilteredStatus(""); // Xóa trạng thái đã lọc
+    setFilteredOrders([]); // Đặt danh sách đơn hàng lọc về rỗng để hiển thị danh sách đơn hàng ban đầu
+  };
+
+  const filterOrdersByStatus = async () => {
+    if (filteredStatus) {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/order/getOrdersByStatus/${filteredStatus}`
+        );
+        setFilteredOrders(response.data.data);
+      } catch (error) {
+        console.error('Lỗi khi lọc đơn hàng:', error);
+      }
+    }
+  };
+
+
+
+
   const dispatch = useDispatch();
   const { arrOrder } = useSelector((root) => root.OrderReducer);
   console.log(arrOrder);
@@ -63,7 +88,9 @@ export default function Order() {
   const [globalFilter, setGlobalFilter] = useState(null);
   const toast = useRef(null);
   const dt = useRef(null);
-
+  useEffect(() => {
+    setProducts(arrOrder);
+  }, [arrOrder, products]);
   useEffect(() => {
     const action1 = GetListOrderAction();
     dispatch(action1);
@@ -71,6 +98,7 @@ export default function Order() {
   useEffect(() => {
     setProducts(arrOrder);
   }, [arrOrder]);
+
 
   const openNew = () => {
     setProduct(emptyProduct);
@@ -90,45 +118,6 @@ export default function Order() {
   const hideDeleteProductsDialog = () => {
     setDeleteProductsDialog(false);
   };
-
-  // const saveProduct = async () => {
-  //   setSubmitted(true);
-
-  //   if (product.description) {
-  //     let _products = [...products];
-  //     let _product = { ...product };
-  //     console.log(_product);
-  //     if (product.order_id !== "0") {
-  //       const index = findIndexById(product.id);
-
-  //       _products[index] = _product;
-  //       const action = await UpdateOrder(product);
-  //       await dispatch(action);
-  //       setProductDialog(false);
-  //       toast.current.show({
-  //         severity: "success",
-  //         summary: "Thành công",
-  //         detail: `Cập trạng thái đơn hàng ${product.order_id} thành công`,
-  //         life: 3000,
-  //       });
-  //       setText("Thông tin đơn hàng");
-  //       // } else {
-  //       //   const action = await CreateCategotyAction(_product);
-  //       //   await dispatch(action);
-  //       //   toast.current.show({
-  //       //     severity: "success",
-  //       //     summary: "Thành công",
-  //       //     detail: "Tạo  mới đơn hàng thành công",
-  //       //     life: 3000,
-  //       //   });
-  //       setProductDialog(false);
-  //     }
-
-  //     // setProducts(_products);
-  //     // setProductDialog(false);
-  //     // setProduct(emptyProduct);
-  //   }
-  // };
   const saveProduct = async () => {
     setSubmitted(true);
 
@@ -205,15 +194,11 @@ export default function Order() {
 
 
 
-
   const statuses = [
     { label: 'Chờ xác nhận', value: 'Chờ xác nhận' },
     { label: 'Đã Xác Nhận', value: 'Đã Xác Nhận' },
     { label: 'Giao Hàng Thành Công', value: 'Giao Hàng Thành Công' }
   ];
-
-
-
 
   const exportCSV = () => {
     dt.current.exportCSV();
@@ -275,15 +260,17 @@ export default function Order() {
 
   const rightToolbarTemplate = () => {
     return (
-      <Button
-        label="Tải xuống"
-        icon="pi pi-upload"
-        style={{ marginRight: "50px" }}
-        className="p-button-help"
-        onClick={exportCSV}
-      />
+      <div className="flex gap-2">
+        <Button
+          label="Tải xuống"
+          icon="pi pi-upload"
+          className="p-button-help"
+          onClick={exportCSV}
+        />
+      </div>
     );
   };
+
 
   const actionBodyTemplate = (rowData) => {
     return (
@@ -317,6 +304,29 @@ export default function Order() {
           placeholder="Tìm kiếm..."
         />
       </span>
+
+      {/* Thêm Dropdown và Button lọc ở đây */}
+      <Dropdown
+        value={filteredStatus}
+        options={statuses}
+        onChange={(e) => setFilteredStatus(e.value)}
+        optionLabel="label"
+        placeholder="Chọn trạng thái"
+      />
+      <Button
+        label="Lọc"
+        icon="pi pi-filter"
+        className="p-button-help"
+        onClick={filterOrdersByStatus}
+      />
+      <Button
+        label="Clear"
+        icon="pi pi-times"
+        className="p-button-danger"
+        onClick={clearFilters}
+      />
+
+
     </div>
   );
   const productDialogFooter = (
@@ -353,9 +363,14 @@ export default function Order() {
             right={rightToolbarTemplate}
           ></Toolbar>
 
+
+
+
+
           <DataTable
             ref={dt}
-            value={products}
+
+            value={filteredOrders.length > 0 ? filteredOrders : products}
             selection={selectedProducts}
             onSelectionChange={(e) => setSelectedProducts(e.value)}
             dataKey="id"
@@ -457,26 +472,6 @@ export default function Order() {
             />
           </div>
 
-
-
-          {/* <div className="field">
-            <label
-              htmlFor="processTypeName"
-              className="font-bold"
-              style={{ fontWeight: "bold" }}
-            >
-              Trạng thái đơn hàng
-            </label>
-            <br />
-            <InputText
-              id="Người mua"
-              value={product.status}
-              onChange={(e) => onInputChange(e, "status")}
-              required
-              autoFocus
-            />
-          </div> */}
-
           <div className="field">
             <label
               htmlFor="processTypeName"
@@ -495,7 +490,6 @@ export default function Order() {
               placeholder="Chọn trạng thái" // Placeholder khi không có trạng thái nào được chọn
             />
           </div>
-
 
           <div className="field">
             <label
@@ -574,50 +568,7 @@ export default function Order() {
           </div>
         </Dialog>
 
-        {/* <Dialog
-          visible={deleteProductDialog}
-          style={{ width: "32rem" }}
-          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-          header="Thông Báo"
-          modal
-          footer={deleteProductDialogFooter}
-          onHide={hideDeleteProductDialog}
-        >
-          <div className="confirmation-content">
-            <i
-              className="pi pi-exclamation-triangle mr-3"
-              style={{ fontSize: "2rem" }}
-            />
-            {product && (
-              <span>
-                Bạn có chắc chắn muốn xóa đơn hàng <b>{product.product_name}</b>
-                ?
-              </span>
-            )}
-          </div>
-        </Dialog> */}
 
-        {/* <Dialog
-          visible={deleteProductsDialog}
-          style={{ width: "32rem" }}
-          breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-          header="Confirm"
-          modal
-          footer={deleteProductsDialogFooter}
-          onHide={hideDeleteProductsDialog}
-        >
-          <div className="confirmation-content">
-            <i
-              className="pi pi-exclamation-triangle mr-3"
-              style={{ fontSize: "2rem" }}
-            />
-            {product && (
-              <span>
-                Are you sure you want to delete the selected products?
-              </span>
-            )}
-          </div>
-        </Dialog> */}
       </div>
     </div>
   );
