@@ -184,6 +184,11 @@ export const AdminTemplate = (props) => {
                           </NavLink>
                         </li>
                         <li className="nav-item">
+                          <NavLink to="/comment" className="nav-link">
+                            <i className="bi bi-bookmarks" /> Comment
+                          </NavLink>
+                        </li>
+                        <li className="nav-item">
                           <NavLink to="/user" className="nav-link">
                             <i className="bi bi-people" /> Người dùng
                           </NavLink>

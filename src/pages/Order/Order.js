@@ -559,7 +559,7 @@ export default function Order() {
                     <div><img src={item.product?.image_url} /> </div>
                     <div style={{ fontWeight: 800 }}> {item.product?.product_name}</div>
                     <div>Số lượng: {item.quantity}</div>
-
+                    <div>Size: {item.product?.sizes}</div>
                     <div>Giá tiền : {item.product?.price}</div>
                   </div>
                 </div>

@@ -6,6 +6,7 @@ import { ChartReducer } from "./reducer/ChartReducer";
 import { UserReducer } from "./reducer/UserReducer";
 import { OrderReducer } from "./reducer/OrderReducer";
 import { BannerReducer } from "./reducer/BannerReducer";
+import { CommentReducer } from "./reducer/CommentReducer";
 
 const rootReducer = combineReducers({
   ProductReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   UserReducer,
   OrderReducer,
   BannerReducer,
+  CommentReducer,
 });
 
 let middleWare = applyMiddleware(reduxThunk);
