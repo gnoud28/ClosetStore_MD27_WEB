@@ -231,7 +231,7 @@ const AdminChart = (props) => {
                               <input type="date" value={startDate} onChange={handleStartDateChange} />
                               <label>Ngày kết thúc:</label>
                               <input type="date" value={endDate} onChange={handleEndDateChange} />
-                              <button  onClick={handleStatistics}>Thống kê</button>
+                              <button onClick={handleStatistics}>Thống kê</button>
                             </div>
 
                             <h2 style={{ lineHeight: '70px' }}>
@@ -243,8 +243,8 @@ const AdminChart = (props) => {
                               )}
                             </h2>
 
-                                    <br/>
-                                    
+                            <br />
+
                           </div>
                         </h2>
                       </div>

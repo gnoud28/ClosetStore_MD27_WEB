@@ -29,18 +29,45 @@ export default function Order() {
     setFilteredOrders([]); // Đặt danh sách đơn hàng lọc về rỗng để hiển thị danh sách đơn hàng ban đầu
   };
 
+  // const filterOrdersByStatus = async () => {
+  //   if (filteredStatus) {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:5000/api/v1/order/getOrdersByStatus/${filteredStatus}`
+  //       );
+  //       setFilteredOrders(response.data.data);
+  //     } catch (error) {
+  //       console.error('Lỗi khi lọc đơn hàng:', error);
+  //     }
+  //   }
+  // };
   const filterOrdersByStatus = async () => {
     if (filteredStatus) {
       try {
         const response = await axios.get(
           `http://localhost:5000/api/v1/order/getOrdersByStatus/${filteredStatus}`
         );
-        setFilteredOrders(response.data.data);
+  
+        const ordersData = response.data.data;
+  
+        if (ordersData.length === 0) {
+          // Hiển thị thông báo không có đơn hàng
+          toast.current.show({
+            severity: "info",
+            summary: "Thông báo",
+            detail: `Không có đơn hàng có trạng thái ${filteredStatus}`,
+            life: 5000, // Thời gian hiển thị thông báo (miliseconds)
+          });
+        } else {
+          setFilteredOrders(ordersData);
+        }
       } catch (error) {
         console.error('Lỗi khi lọc đơn hàng:', error);
       }
     }
   };
+  
+  
 
 
 
@@ -355,6 +382,7 @@ export default function Order() {
 
   return (
     <div className="app-main__outer" style={{ margin: "20px 30px" }}>
+       <Toast ref={toast} />
       <div>
         <Toast ref={toast} />
         <div className="card">
