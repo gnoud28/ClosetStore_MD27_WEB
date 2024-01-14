@@ -20,6 +20,7 @@ import {
 import { GetListOrderAction, UpdateOrder } from "../../redux/action/OrderAction";
 
 export default function Order() {
+  const [productSizes, setProductSizes] = useState([]);
 
   const [filteredStatus, setFilteredStatus] = useState(""); // State để lưu trạng thái đơn hàng được lọc
   const [filteredOrders, setFilteredOrders] = useState([]); // State để lưu danh sách đơn hàng được lọc
@@ -542,30 +543,34 @@ export default function Order() {
           </div>
           <br />
           <br />
-          <div className="field">
-            <label
-              htmlFor="processTypeName"
-              className="font-bold"
-              style={{ fontWeight: "bold", marginBottom: '10px' }}
-            >
-              Danh sách sản phẩm
-            </label>
-            <br />
-            <br />
-            {product.OrderDetails?.map((item, index) => {
-              return (
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                  <div style={{ padding: '10px', border: '1px solid black' }}>
-                    <div><img src={item.product?.image_url} /> </div>
-                    <div style={{ fontWeight: 800 }}> {item.product?.product_name}</div>
-                    <div>Số lượng: {item.quantity}</div>
-                    <div>Size: {item.product?.sizes}</div>
-                    <div>Giá tiền : {item.product?.price}</div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+       <div className="field">
+  <label
+    htmlFor="processTypeName"
+    className="font-bold"
+    style={{ fontWeight: "bold", marginBottom: '10px' }}
+  >
+    Danh sách sản phẩm
+  </label>
+  <br />
+  <br />
+  {product.OrderDetails?.map((item, index) => {
+    // Tìm thông tin kích thước từ state productSizes
+    const sizeInfo = productSizes.find(size => size.product_id === item.product_id && size.size_name === item.size_name);
+    
+    return (
+      <div key={index} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+        <div style={{ padding: '10px', border: '1px solid black' }}>
+          <div><img src={item.product?.image_url} alt={item.product?.product_name} /> </div>
+          <div style={{ fontWeight: 800 }}> {item.product?.product_name}</div>
+          <div>Số lượng: {item.quantity}</div>
+          <div>Size: {sizeInfo?.size_name}</div> {/* Sử dụng sizeInfo cho thông tin từ Product_Sizes */}
+          <div>Giá tiền : {item.product?.price}</div>
+        </div>
+      </div>
+    );
+  })}
+</div>
+
         </Dialog>
 
 
