@@ -265,13 +265,13 @@ export default function Comment() {
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <Button
+                {/* <Button
                     icon="pi pi-pencil"
                     rounded
                     outlined
                     className="mr-2"
                     onClick={() => editProduct(rowData)}
-                />
+                /> */}
                 <Button
                     icon="pi pi-trash"
                     rounded

@@ -237,8 +237,8 @@ const AdminChart = (props) => {
                             <h2 style={{ lineHeight: '70px' }}>
                               {apiData && (
                                 <div>
-                                  <p>Số lượng order: {apiData.data[0].orderCount}</p>
-                                  <p>Tổng tiền: {apiData.data[0].totalAmount}</p>
+                                  <p>Số lượng order: {apiData.data[0].orderCount} sản phẩm</p>
+                                  <p>Tổng tiền: {apiData.data[0].totalAmount} đ</p>
                                 </div>
                               )}
                             </h2>
