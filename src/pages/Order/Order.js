@@ -20,6 +20,7 @@ import {
 import { GetListOrderAction, UpdateOrder } from "../../redux/action/OrderAction";
 
 export default function Order() {
+  
   const [productSizes, setProductSizes] = useState([]);
 
   const [filteredStatus, setFilteredStatus] = useState(""); // State để lưu trạng thái đơn hàng được lọc
@@ -42,6 +43,7 @@ export default function Order() {
   //   }
   // };
   const filterOrdersByStatus = async () => {
+    
     if (filteredStatus) {
       try {
         const response = await axios.get(
