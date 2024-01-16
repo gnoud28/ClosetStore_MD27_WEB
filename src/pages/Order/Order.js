@@ -30,18 +30,7 @@ export default function Order() {
     setFilteredOrders([]); // Đặt danh sách đơn hàng lọc về rỗng để hiển thị danh sách đơn hàng ban đầu
   };
 
-  // const filterOrdersByStatus = async () => {
-  //   if (filteredStatus) {
-  //     try {
-  //       const response = await axios.get(
-  //         `http://localhost:5000/api/v1/order/getOrdersByStatus/${filteredStatus}`
-  //       );
-  //       setFilteredOrders(response.data.data);
-  //     } catch (error) {
-  //       console.error('Lỗi khi lọc đơn hàng:', error);
-  //     }
-  //   }
-  // };
+  
   const filterOrdersByStatus = async () => {
     
     if (filteredStatus) {
@@ -226,8 +215,9 @@ export default function Order() {
 
   const statuses = [
     { label: 'Chờ xác nhận', value: 'Chờ xác nhận' },
-    { label: 'Đã Xác Nhận', value: 'Đã Xác Nhận' },
-    { label: 'Giao Hàng Thành Công', value: 'Giao Hàng Thành Công' }
+    { label: 'Đã xác nhận', value: 'Đã xác nhận' },
+    {label: 'Đang giao hàng', value: 'Đang giao hàng' },
+    { label: 'Giao hàng thành công', value: 'Giao hàng thành công' }
   ];
 
   const exportCSV = () => {
@@ -585,7 +575,7 @@ export default function Order() {
   <br />
   {product.OrderDetails?.map((item, index) => {
     // Tìm thông tin kích thước từ state productSizes
-    const sizeInfo = productSizes.find(size => size.product_id === item.product_id && size.size_name === item.size_name);
+    
     
     return (
       <div key={index} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
@@ -593,7 +583,7 @@ export default function Order() {
           <div><img src={item.product?.image_url} alt={item.product?.product_name} /> </div>
           <div style={{ fontWeight: 800 }}> {item.product?.product_name}</div>
           <div>Số lượng: {item.quantity}</div>
-          <div>Size: {sizeInfo?.size_name}</div> {/* Sử dụng sizeInfo cho thông tin từ Product_Sizes */}
+          <div>Size</div> {/* Sử dụng sizeInfo cho thông tin từ Product_Sizes */}
           <div>Giá tiền : {item.product?.price}</div>
         </div>
       </div>
